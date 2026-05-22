@@ -10,8 +10,6 @@ struct clientData
     char name[30];
     double balance;
 };
-
-// Function Prototypes
 void addAccount(FILE *fp);
 void display(FILE *fp);
 void deposit(FILE *fp);
@@ -26,7 +24,7 @@ int main()
 
     struct clientData blank = {0, "", 0.0};
 
-    // Create file if not exists
+
     fp = fopen("bank.dat", "rb");
 
     if (fp == NULL)
@@ -47,7 +45,7 @@ int main()
 
     fclose(fp);
 
-    // Open file in read/write mode
+    
     fp = fopen("bank.dat", "rb+");
 
     if (fp == NULL)
@@ -111,7 +109,6 @@ int main()
     return 0;
 }
 
-// Add Account
 void addAccount(FILE *fp)
 {
     struct clientData c, temp;
@@ -149,7 +146,7 @@ void addAccount(FILE *fp)
     printf("Account Added Successfully.\n");
 }
 
-// Display All Accounts
+
 void display(FILE *fp)
 {
     struct clientData c;
@@ -172,7 +169,6 @@ void display(FILE *fp)
     }
 }
 
-// Deposit Money
 void deposit(FILE *fp)
 {
     int acc;
@@ -211,7 +207,7 @@ void deposit(FILE *fp)
     printf("Deposit Successful.\n");
 }
 
-// Withdraw Money
+
 void withdraw(FILE *fp)
 {
     int acc;
@@ -256,7 +252,7 @@ void withdraw(FILE *fp)
     printf("Withdrawal Successful.\n");
 }
 
-// Search Account
+
 void searchAccount(FILE *fp)
 {
     int acc;
@@ -287,7 +283,6 @@ void searchAccount(FILE *fp)
     }
 }
 
-// Delete Account
 void deleteAccount(FILE *fp)
 {
     int acc;
