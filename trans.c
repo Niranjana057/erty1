@@ -1,4 +1,3 @@
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -12,11 +11,12 @@ struct clientData
     double balance;
 };
 
+// Function Prototypes
 void addAccount(FILE *fp);
 void display(FILE *fp);
 void deposit(FILE *fp);
 void withdraw(FILE *fp);
-void search(FILE *fp);
+void searchAccount(FILE *fp);
 void deleteAccount(FILE *fp);
 
 int main()
@@ -26,10 +26,9 @@ int main()
 
     struct clientData blank = {0, "", 0.0};
 
-    // Open file in read mode
+    // Create file if not exists
     fp = fopen("bank.dat", "rb");
 
-    // If file does not exist, create it
     if (fp == NULL)
     {
         fp = fopen("bank.dat", "wb");
@@ -48,7 +47,7 @@ int main()
 
     fclose(fp);
 
-    // Open file for reading and writing
+    // Open file in read/write mode
     fp = fopen("bank.dat", "rb+");
 
     if (fp == NULL)
@@ -90,7 +89,7 @@ int main()
             break;
 
         case 5:
-            search(fp);
+            searchAccount(fp);
             break;
 
         case 6:
@@ -120,14 +119,12 @@ void addAccount(FILE *fp)
     printf("Enter Account Number (1-100): ");
     scanf("%d", &c.acctNum);
 
-    // Validation
     if (c.acctNum < 1 || c.acctNum > SIZE)
     {
         printf("Invalid Account Number!\n");
         return;
     }
 
-    // Check whether account already exists
     fseek(fp, (c.acctNum - 1) * sizeof(struct clientData), SEEK_SET);
     fread(&temp, sizeof(struct clientData), 1, fp);
 
@@ -159,15 +156,15 @@ void display(FILE *fp)
 
     rewind(fp);
 
-    printf("\n---------------------------------\n");
-    printf("AccNo\tName\tBalance\n");
-    printf("---------------------------------\n");
+    printf("\n-----------------------------------\n");
+    printf("AccNo\tName\t\tBalance\n");
+    printf("-----------------------------------\n");
 
     while (fread(&c, sizeof(struct clientData), 1, fp))
     {
         if (c.acctNum != 0)
         {
-            printf("%d\t%s\t%.2lf\n",
+            printf("%d\t%s\t\t%.2lf\n",
                    c.acctNum,
                    c.name,
                    c.balance);
@@ -192,7 +189,6 @@ void deposit(FILE *fp)
     }
 
     fseek(fp, (acc - 1) * sizeof(struct clientData), SEEK_SET);
-
     fread(&c, sizeof(struct clientData), 1, fp);
 
     if (c.acctNum == 0)
@@ -232,7 +228,6 @@ void withdraw(FILE *fp)
     }
 
     fseek(fp, (acc - 1) * sizeof(struct clientData), SEEK_SET);
-
     fread(&c, sizeof(struct clientData), 1, fp);
 
     if (c.acctNum == 0)
@@ -262,7 +257,7 @@ void withdraw(FILE *fp)
 }
 
 // Search Account
-void search(FILE *fp)
+void searchAccount(FILE *fp)
 {
     int acc;
     struct clientData c;
@@ -277,7 +272,6 @@ void search(FILE *fp)
     }
 
     fseek(fp, (acc - 1) * sizeof(struct clientData), SEEK_SET);
-
     fread(&c, sizeof(struct clientData), 1, fp);
 
     if (c.acctNum == 0)
@@ -310,7 +304,6 @@ void deleteAccount(FILE *fp)
     }
 
     fseek(fp, (acc - 1) * sizeof(struct clientData), SEEK_SET);
-
     fread(&c, sizeof(struct clientData), 1, fp);
 
     if (c.acctNum == 0)
